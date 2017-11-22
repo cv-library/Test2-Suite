@@ -1,4 +1,4 @@
-package Test2::Compare::Number;
+package Test2::Compare::Float;
 use strict;
 use warnings;
 
@@ -8,29 +8,35 @@ use base 'Test2::Compare::Base';
 
 our $VERSION = '0.000085';
 
-use Test2::Util::HashBase qw/input/;
+our $DEFAULT_TOLERANCE = 1e-08;
+
+use Test2::Util::HashBase qw/input tolerance/;
 
 # Overloads '!' for us.
 use Test2::Compare::Negatable;
 
 sub init {
-    my $self = shift;
-    my $input = $self->{+INPUT};
+    my $self      = shift;
+    my $input     = $self->{+INPUT};
 
-    confess "input must be defined for 'Number' check"
+    $self->{+TOLERANCE} = $DEFAULT_TOLERANCE
+      unless defined $self->{+TOLERANCE};
+
+    confess "input must be defined for 'Float' check"
         unless defined $input;
 
     # Check for ''
-    confess "input must be a number for 'Number' check"
+    confess "input must be a number for 'Float' check"
         unless length($input) && $input =~ m/\S/;
 
     $self->SUPER::init(@_);
 }
 
 sub name {
-    my $self = shift;
-    my $in = $self->{+INPUT};
-    return $in;
+    my $self      = shift;
+    my $in        = $self->{+INPUT};
+    my $tolerance = $self->{+TOLERANCE};
+    return "$in +/- $tolerance";
 }
 
 sub operator {
@@ -55,14 +61,22 @@ sub verify {
     return 0 if ref $got;
     return 0 unless length($got) && $got =~ m/\S/;
 
-    my $input  = $self->{+INPUT};
-    my $negate = $self->{+NEGATE};
+    my $input     = $self->{+INPUT};
+    my $negate    = $self->{+NEGATE};
+    my $tolerance = $self->{+TOLERANCE};
 
     my @warnings;
     my $out;
     {
         local $SIG{__WARN__} = sub { push @warnings => @_ };
-        $out = $negate ? ($input != $got) : ($input == $got);
+
+        my $equal = ($input == $got);
+        $equal = 1 if
+          !$equal
+          && $got > $input - $tolerance
+          && $got < $input + $tolerance;
+
+        $out = $negate ? !$equal : $equal;
     }
 
     for my $warn (@warnings) {
@@ -86,12 +100,18 @@ __END__
 
 =head1 NAME
 
-Test2::Compare::Number - Compare two values as numbers
+Test2::Compare::Float - Compare two values as numbers with tolerance.
 
 =head1 DESCRIPTION
 
 This is used to compare two numbers. You can also check that two numbers are not
 the same.
+
+This is similar to Test2::Compare::Number, with extra checks to work around floating
+point representation issues.
+
+The optional 'tolerance' parameter controls how close the two numbers must be to
+be considered equal.  Tolerance defaults to 1e-08.
 
 B<Note>: This will fail if the received value is undefined. It must be a number.
 
@@ -117,7 +137,7 @@ F<http://github.com/Test-More/Test2-Suite/>.
 
 =over 4
 
-=item Chad Granum E<lt>exodist@cpan.orgE<gt>
+=item Andrew Grangaard E<lt>spazm@cpan.orgE<gt>
 
 =back
 

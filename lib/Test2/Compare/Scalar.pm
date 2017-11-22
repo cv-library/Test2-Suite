@@ -4,7 +4,7 @@ use warnings;
 
 use base 'Test2::Compare::Base';
 
-our $VERSION = '0.000081';
+our $VERSION = '0.000085';
 
 use Test2::Util::HashBase qw/item/;
 
@@ -30,7 +30,7 @@ sub verify {
     return 0 unless $exists;
     return 0 unless defined $got;
     return 0 unless ref($got);
-    return 0 unless reftype($got) eq 'SCALAR';
+    return 0 unless reftype($got) eq 'SCALAR' || reftype($got) eq 'VSTRING';
     return 1;
 }
 
@@ -101,7 +101,7 @@ F<http://github.com/Test-More/Test2-Suite/>.
 
 =head1 COPYRIGHT
 
-Copyright 2016 Chad Granum E<lt>exodist@cpan.orgE<gt>.
+Copyright 2017 Chad Granum E<lt>exodist@cpan.orgE<gt>.
 
 This program is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself.

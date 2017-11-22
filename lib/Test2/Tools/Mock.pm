@@ -11,7 +11,7 @@ use Test2::Mock();
 
 use base 'Exporter';
 
-our $VERSION = '0.000081';
+our $VERSION = '0.000085';
 
 our @CARP_NOT = (__PACKAGE__, 'Test2::Mock');
 our @EXPORT = qw/mock mocked/;
@@ -323,6 +323,14 @@ plugins in ways L<Mock::Quick> would be unable to.
 
     $mock = undef; # Undoes all the mocking, restoring all original methods.
 
+    my $simple_mock = mock {} => (
+        add => [
+            is_active => sub { ... }
+        ]
+    );
+
+    $simple_mock->is_active();        # Calls our newly mocked method.
+
 =head1 EXPORTS
 
 =head2 DEFAULT
@@ -515,7 +523,7 @@ F<http://github.com/Test-More/Test2-Suite/>.
 
 =head1 COPYRIGHT
 
-Copyright 2016 Chad Granum E<lt>exodist@cpan.orgE<gt>.
+Copyright 2017 Chad Granum E<lt>exodist@cpan.orgE<gt>.
 
 This program is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself.

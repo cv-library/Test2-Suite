@@ -2,7 +2,7 @@ package Test2::Compare;
 use strict;
 use warnings;
 
-our $VERSION = '0.000081';
+our $VERSION = '0.000085';
 
 use Scalar::Util qw/blessed/;
 use Test2::Util qw/try/;
@@ -152,7 +152,7 @@ sub _convert {
     return Test2::Compare::Regex->new(input => $thing)
         if $type eq 'REGEXP';
 
-    if ($type eq 'SCALAR') {
+    if ($type eq 'SCALAR' || $type eq 'VSTRING') {
         my $nested = _convert($$thing, $config);
         return Test2::Compare::Scalar->new(item => $nested);
     }
@@ -439,7 +439,7 @@ F<http://github.com/Test-More/Test2-Suite/>.
 
 =head1 COPYRIGHT
 
-Copyright 2016 Chad Granum E<lt>exodist@cpan.orgE<gt>.
+Copyright 2017 Chad Granum E<lt>exodist@cpan.orgE<gt>.
 
 This program is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself.

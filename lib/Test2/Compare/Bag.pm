@@ -4,7 +4,7 @@ use warnings;
 
 use base 'Test2::Compare::Base';
 
-our $VERSION = '0.000081';
+our $VERSION = '0.000085';
 
 use Test2::Util::HashBase qw/ending items/;
 
@@ -60,6 +60,7 @@ sub deltas {
 
         my $match = 0;
         for my $idx (0..$#list) {
+            next unless exists $unmatched{$idx};
             my $val = $list[$idx];
             my $deltas = $check->run(
                 id      => [ARRAY => $idx],
@@ -192,9 +193,9 @@ F<http://github.com/Test-More/Test2-Suite/>.
 
 =head1 COPYRIGHT
 
-Copyright 2016 Chad Granum E<lt>exodist@cpan.orgE<gt>.
+Copyright 2017 Chad Granum E<lt>exodist@cpan.orgE<gt>.
 
-Copyright 2016 Gianni Ceccarelli E<lt>dakkar@thenautilus.netE<gt>
+Copyright 2017 Gianni Ceccarelli E<lt>dakkar@thenautilus.netE<gt>
 
 This program is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself.

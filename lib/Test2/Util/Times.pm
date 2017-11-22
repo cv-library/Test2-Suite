@@ -4,7 +4,7 @@ use warnings;
 
 use List::Util qw/sum/;
 
-our $VERSION = '0.000081';
+our $VERSION = '0.000085';
 
 our @EXPORT_OK = qw/render_bench/;
 use base 'Exporter';
@@ -90,7 +90,7 @@ made up). I<Which string is used depends on the time elapsed.>
     04d:18h:22m:54.45s on wallclock (0.05 usr 0.00 sys + 0.00 cusr 0.00 csys = 0.05 CPU)
 
 The first 2 arguments are the C<$start> and C<$end> times in seconds (as
-retured by C<time()> or C<Time::HiRes::time()>).
+returned by C<time()> or C<Time::HiRes::time()>).
 
 The last 4 arguments are timing information as returned by the C<times()>
 function.
@@ -121,7 +121,7 @@ F<http://github.com/Test-More/Test2-Suite/>.
 
 =head1 COPYRIGHT
 
-Copyright 2016 Chad Granum E<lt>exodist@cpan.orgE<gt>.
+Copyright 2017 Chad Granum E<lt>exodist@cpan.orgE<gt>.
 
 This program is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself.
